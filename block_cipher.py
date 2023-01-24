@@ -22,42 +22,29 @@ def encrypt(file, key, iv):
     cipher_cbc = AES.new(key, AES.MODE_CBC)
     
     #pad data
-    header_bytes = plaintext[0:55]
-    plaintext = plaintext[55:]
+    header_bytes = plaintext[0:139]
+    plaintext = plaintext[139:]
     paddedText = pad(plaintext, BLOCKSIZE)
-    
-        
     
 
     # Encrypt the plaintext and write it to a new file
+    f = open("ciphertext_ecb.bmp", 'wb')
+    f_cbc = open("ciphertext_cbc.bmp", 'wb')
+    f.write(header_bytes)
     for i in range(0, len(paddedText), BLOCKSIZE):
         #ecb
         ciphertext_ecb = cipher_ecb.encrypt(paddedText[i:i+BLOCKSIZE])
-        with open("ciphertext_ecb.bmp", 'wb') as f:
-            f.write(header_bytes)
-            f.write(ciphertext_ecb)
+        f.write(ciphertext_ecb)
                 
         #cbc
-        '''if(i == 0):
+        if(i == 0):
             curXOR_cbc = iv ^ paddedText[i:i+BLOCKSIZE]
         else:
             curXOR_cbc = curXOR_cbc ^ paddedText[i:i+BLOCKSIZE]
         ciphertext_cbc = cipher_cbc.encrypt(curXOR_cbc)
-        with open("ciphertext_cbc.bmp", 'wb') as f:
-            f.write(header_bytes)
-            f.write(ciphertext_cbc)'''
+        f_cbc.write(ciphertext_cbc)
      
-    #ECB decryption test       
-    decrypt_ecb(key, ciphertext_ecb, header_bytes)
-           
-            
-def decrypt_ecb(key, ciphertext, header_bytes):
-    decipher = AES.new(key, AES.MODE_ECB)
-    deciphertext = decipher.decrypt(ciphertext)
-    with open("decrypt_test.bmp", 'wb') as f:
-            f.write(header_bytes)
-            f.write(deciphertext)  
-    
+    f.close()
 
 
 key = get_random_bytes(16)
