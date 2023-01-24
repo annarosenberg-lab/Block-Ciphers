@@ -42,11 +42,9 @@ def encrypt(file, key, iv):
         f.write(ciphertext_ecb)
                 
         #cbc
-        if(i == 0): 
-            XOR_text = byte_xor(curTxt, iv)        
-        else:
-            XOR_text = byte_xor(curTxt, ciphertext_cbc)
+        XOR_text = byte_xor(curTxt, iv)        
         ciphertext_cbc = cipher_cbc.encrypt(XOR_text)
+        iv = ciphertext_cbc
         f_cbc.write(ciphertext_cbc)
      
     f.close()
