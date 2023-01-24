@@ -9,6 +9,9 @@ BLOCKSIZE = 16
 def byteLen(s):
     return len(s.decode('utf-8'))
 
+def byte_xor(ba1, ba2):
+    return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+
 
 def encrypt(file, key, iv):
     # Read plaintext
@@ -31,26 +34,17 @@ def encrypt(file, key, iv):
     f = open("ciphertext_ecb.bmp", 'wb')
     f_cbc = open("ciphertext_cbc.bmp", 'wb')
     f.write(header_bytes)
+    f_cbc.write(header_bytes)
     for i in range(0, len(paddedText), BLOCKSIZE):
         #ecb
         ciphertext_ecb = cipher_ecb.encrypt(paddedText[i:i+BLOCKSIZE])
         f.write(ciphertext_ecb)
                 
         #cbc
-        curTxt = paddedText[i:i+BLOCKSIZE]
-        curXOR_cbc_Arr = []
-        if(i == 0):        
-            #curXOR_cbc = hex(iv) ^ hex(paddedText[i:i+BLOCKSIZE])            
-            #new = [chr(ord(a) ^ ord(b)) for a,b in zip(iv, paddedText[i:i+BLOCKSIZE])]
-            for cur in range(0, 16):            
-                curXOR_cbc_Arr.append(chr(iv[cur] ^ curTxt[cur]))
-        else:
-            for cur in range(0, 16):            
-                curXOR_cbc_Arr.append(chr(curXOR_cbc_Arr[cur] ^ curTxt[cur]))
+        XOR_text = byte_xor(paddedText[i:i+BLOCKSIZE], iv)
+        ciphertext_cbc = cipher_cbc.encrypt(XOR_text)
+        
             
-        curXOR_cbc = "".join(curXOR_cbc_Arr)
-        ciphertext_cbc = cipher_cbc.encrypt(curXOR_cbc)
-        curXOR_cbc_Arr.clear()
         f_cbc.write(ciphertext_cbc)
      
     f.close()
