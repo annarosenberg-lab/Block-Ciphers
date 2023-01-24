@@ -22,10 +22,10 @@ def encrypt(file, key, iv):
     cipher_cbc = AES.new(key, AES.MODE_CBC)
     
     #pad data
+    header_bytes = plaintext[0:55]
+    plaintext = plaintext[55:]
     paddedText = pad(plaintext, BLOCKSIZE)
-    header_bytes = paddedText[0:55]
-    print(header_bytes)
-    paddedText[55:]
+    
         
     
 
@@ -38,14 +38,14 @@ def encrypt(file, key, iv):
             f.write(ciphertext_ecb)
                 
         #cbc
-        if(i == 0):
+        '''if(i == 0):
             curXOR_cbc = iv ^ paddedText[i:i+BLOCKSIZE]
         else:
             curXOR_cbc = curXOR_cbc ^ paddedText[i:i+BLOCKSIZE]
         ciphertext_cbc = cipher_cbc.encrypt(curXOR_cbc)
         with open("ciphertext_cbc.bmp", 'wb') as f:
             f.write(header_bytes)
-            f.write(ciphertext_cbc)
+            f.write(ciphertext_cbc)'''
      
     #ECB decryption test       
     decrypt_ecb(key, ciphertext_ecb, header_bytes)
@@ -54,7 +54,7 @@ def encrypt(file, key, iv):
 def decrypt_ecb(key, ciphertext, header_bytes):
     decipher = AES.new(key, AES.MODE_ECB)
     deciphertext = decipher.decrypt(ciphertext)
-    with open("decrypttesy.bmp", 'wb') as f:
+    with open("decrypt_test.bmp", 'wb') as f:
             f.write(header_bytes)
             f.write(deciphertext)  
     
