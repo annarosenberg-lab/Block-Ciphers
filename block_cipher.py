@@ -34,6 +34,7 @@ def encrypt(file, key, iv):
     f = open("ciphertext_ecb.bmp", 'wb')
     f_cbc = open("ciphertext_cbc.bmp", 'wb')
     f.write(header_bytes)
+    f_cbc.write(header_bytes)
     for i in range(0, len(paddedText), BLOCKSIZE):
         curTxt = paddedText[i:i+BLOCKSIZE]
         
