@@ -5,10 +5,10 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad
 
 
-submit(userStr):
+submit(userStr, key, iv):
     
     
-verify(decryptStr):
+verify(decryptStr, key, iv):
     
     
 key = get_random_bytes(16)
