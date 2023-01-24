@@ -34,17 +34,19 @@ def encrypt(file, key, iv):
     f = open("ciphertext_ecb.bmp", 'wb')
     f_cbc = open("ciphertext_cbc.bmp", 'wb')
     f.write(header_bytes)
-    f_cbc.write(header_bytes)
     for i in range(0, len(paddedText), BLOCKSIZE):
+        curTxt = paddedText[i:i+BLOCKSIZE]
+        
         #ecb
-        ciphertext_ecb = cipher_ecb.encrypt(paddedText[i:i+BLOCKSIZE])
+        ciphertext_ecb = cipher_ecb.encrypt(curTxt)
         f.write(ciphertext_ecb)
                 
         #cbc
-        XOR_text = byte_xor(paddedText[i:i+BLOCKSIZE], iv)
+        if(i == 0): 
+            XOR_text = byte_xor(curTxt, iv)        
+        else:
+            XOR_text = byte_xor(curTxt, XOR_text)
         ciphertext_cbc = cipher_cbc.encrypt(XOR_text)
-        
-            
         f_cbc.write(ciphertext_cbc)
      
     f.close()
