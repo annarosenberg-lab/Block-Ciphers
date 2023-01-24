@@ -43,10 +43,12 @@ def encrypt(file, key, iv):
         f.write(ciphertext_ecb)
                 
         #cbc
-        XOR_text = byte_xor(curTxt, iv)        
+        if(i == 0):
+            XOR_text = byte_xor(curTxt, iv)    
+        else:
+            XOR_text = byte_xor(curTxt, ciphertext_cbc) 
         ciphertext_cbc = cipher_cbc.encrypt(XOR_text)
-        iv = ciphertext_cbc
-        f_cbc.write(ciphertext_cbc)
+        f_cbc.write(iv)
      
     f.close()
     f_cbc.close()
@@ -54,4 +56,4 @@ def encrypt(file, key, iv):
 
 key = get_random_bytes(16)
 iv = get_random_bytes(16)
-encrypt("cp-logo.bmp", key, iv)
+encrypt("mustang.bmp", key, iv)
