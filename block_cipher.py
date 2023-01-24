@@ -37,14 +37,24 @@ def encrypt(file, key, iv):
         f.write(ciphertext_ecb)
                 
         #cbc
-        if(i == 0):
-            curXOR_cbc = iv ^ paddedText[i:i+BLOCKSIZE]
+        curTxt = paddedText[i:i+BLOCKSIZE]
+        curXOR_cbc_Arr = []
+        if(i == 0):        
+            #curXOR_cbc = hex(iv) ^ hex(paddedText[i:i+BLOCKSIZE])            
+            #new = [chr(ord(a) ^ ord(b)) for a,b in zip(iv, paddedText[i:i+BLOCKSIZE])]
+            for cur in range(0, 16):            
+                curXOR_cbc_Arr.append(chr(iv[cur] ^ curTxt[cur]))
         else:
-            curXOR_cbc = curXOR_cbc ^ paddedText[i:i+BLOCKSIZE]
+            for cur in range(0, 16):            
+                curXOR_cbc_Arr.append(chr(curXOR_cbc_Arr[cur] ^ curTxt[cur]))
+            
+        curXOR_cbc = "".join(curXOR_cbc_Arr)
         ciphertext_cbc = cipher_cbc.encrypt(curXOR_cbc)
+        curXOR_cbc_Arr.clear()
         f_cbc.write(ciphertext_cbc)
      
     f.close()
+    f_cbc.close()
 
 
 key = get_random_bytes(16)
