@@ -18,7 +18,6 @@ def submit(userData, key, iv):
     print("\nUSER DATA:\n", userData, "\n")
 
     paddedText = pad(userData.encode(), BLOCKSIZE)          #pad the final string
-    print("PADDED TEXT:\n", paddedText)
     
     cipherText = bytearray()
     for i in range(0, len(paddedText), BLOCKSIZE):
@@ -27,27 +26,24 @@ def submit(userData, key, iv):
         cipherText.extend(cipherInst.encrypt(XOR_text))
         iv = cipherInst.encrypt(XOR_text)
     
-    
     print("\nCIPHER TEXT:\n", cipherText, "\n")         
     
-    
     slayORnoSlay = verify(cipherText, key, iv)
-    if slayORnoSlay == True:
-        print("OH NOOOO ADMIN FOUND")
+    if slayORnoSlay:
+        print("\nOH NOOOO ADMIN FOUND")
     else:
-        print("YEAHHHHH")
+        print("\nYEAHHHHH\n")
     
     
 def verify(cipherText, key, iv): 
     plaintext = verifyCipherInst.decrypt(cipherText)
+    plaintext = unpad(plaintext, BLOCKSIZE)
+    print("PLAIN DECRYPTED TEXT:\n", plaintext)
     if ";admin=true" in str(plaintext):
         return True
     return False
 
-    
-            
-    
-    
+       
     
 key = get_random_bytes(16)
 iv = get_random_bytes(16) 
