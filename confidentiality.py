@@ -32,12 +32,17 @@ def submit(userData, key, iv):
     
     
     slayORnoSlay = verify(cipherText, key, iv)
+    if slayORnoSlay == True:
+        print("OH NOOOO ADMIN FOUND")
+    else:
+        print("YEAHHHHH")
     
     
 def verify(cipherText, key, iv): 
-    #print(cipherText)
     plaintext = verifyCipherInst.decrypt(cipherText)
-    print("PLAIN TEXT:\n", plaintext)
+    if ";admin=true" in str(plaintext):
+        return True
+    return False
 
     
             
