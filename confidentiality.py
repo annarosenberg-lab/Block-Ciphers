@@ -36,12 +36,30 @@ def submit(userData, key, iv):
     
     
 def verify(cipherText, key, iv): 
+    byteFlip = input("Should we byte flip?(Y/N) ")
+    if byteFlip == "Y":
+        cipherText = flipByte(cipherText)
+    #print("\ntype: /n", cipherText.decode('utf-8'))
+    
     plaintext = verifyCipherInst.decrypt(cipherText)
+    print("\nPLAIN DECRYPTED TEXT:\n", plaintext)
+    
     plaintext = unpad(plaintext, BLOCKSIZE)
-    print("PLAIN DECRYPTED TEXT:\n", plaintext)
-    if ";admin=true" in str(plaintext):
+    
+    #print("\nBYTE CHECK = \n", str(plaintext)[21])
+    if "admin=true" in str(plaintext):
         return True
     return False
+
+def flipByte(cipherText):
+    changeBlock = cipherText[22:37]
+    temp = bytes(";admin=true.....",'utf-8' )
+    cipherTextTemp = cipherText
+    block = bytes(b ^ a for a, b in zip(changeBlock, temp))
+    cipherText = cipherTextTemp[:22] + block + cipherTextTemp[32:]
+    
+    print("\nNEW CIPHER TEXT: \n", cipherText, "\n")
+    return cipherText
 
        
     
