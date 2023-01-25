@@ -9,8 +9,8 @@ BLOCKSIZE = 16
 def byteLen(s):
     return len(s.decode('utf-8'))
 
-def byte_xor(ba1, ba2):
-    return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+def byte_xor(b1, b2):
+    return bytes([_a ^ _b for _a, _b in zip(b1, b2)])
 
 
 def encrypt(file, key, iv):
