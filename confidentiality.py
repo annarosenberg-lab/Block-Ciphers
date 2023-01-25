@@ -7,8 +7,8 @@ from Crypto.Util.Padding import unpad
 
 BLOCKSIZE = 16
 
-def byte_xor(ba1, ba2):
-    return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+def byte_xor(b1, b2):
+    return bytes([_a ^ _b for _a, _b in zip(b1, b2)])
 
 def submit(userData, key, iv):
     userData = userData.replace(';', '%3B')
@@ -28,8 +28,8 @@ def submit(userData, key, iv):
     
     print("\nCIPHER TEXT:\n", cipherText, "\n")         
     
-    slayORnoSlay = verify(cipherText, key, iv)
-    if slayORnoSlay:
+    AdminFound = verify(cipherText, key, iv)
+    if AdminFound:
         print("\nOH NOOOO ADMIN FOUND")
     else:
         print("\nYEAHHHHH\n")
@@ -52,11 +52,11 @@ def verify(cipherText, key, iv):
     return False
 
 def flipByte(cipherText):
-    changeBlock = cipherText[22:37]
+    changeBlock = cipherText[15:32]
     temp = bytes(";admin=true.....",'utf-8' )
     cipherTextTemp = cipherText
     block = bytes(b ^ a for a, b in zip(changeBlock, temp))
-    cipherText = cipherTextTemp[:22] + block + cipherTextTemp[32:]
+    cipherText = cipherTextTemp[:15] + block + cipherTextTemp[32:]
     
     print("\nNEW CIPHER TEXT: \n", cipherText, "\n")
     return cipherText
