@@ -39,8 +39,8 @@ def submit(userData, key, iv):
     print("\nCIPHER TEXT:\n", cipherText, "\n")        
 
     
-    slayORnoSlay = verify(cipherText, key, iv)
-    if slayORnoSlay:
+    adminTrue = verify(cipherText, key, iv)
+    if adminTrue:
         print("\nADMIN FOUND")
     else:
         print("\nNO ADMIN FOUND")
