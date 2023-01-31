@@ -15,6 +15,7 @@ publicKey = [e, n]
 privateKey = [d, n]
 
 #encryption 
+#Bob encrypts a message with alice's public key
 plaintext = "hello"
 print("plaintext: ", plaintext)
 plaintext = plaintext.encode('utf-8').hex()
@@ -23,6 +24,7 @@ ciphertext = pow(plaintext, e, n)
 print("ciphertext:", ciphertext)
 
 #decryption
+#Bob sends encrypted message to Alice and Alice decryptes with her private key
 decryptedtext = pow(ciphertext, d, n)
 decryptedtext = hex(decryptedtext)[2:]
 decryptedtext = bytearray.fromhex(decryptedtext)
