@@ -27,19 +27,23 @@ print("Hash string 2:", Hash_sha256(string_2))
 
 #Part C
 s1 = "Hello"
-def FindC(s1: str):
-    hash_s1 = Hash_sha256(s1)[0:4]
-    s2 = ''.join(random.choices(string.ascii_lowercase +
-                             string.digits, k=5))
-    hash_s2 = Hash_sha256(s2)[0:4]
-    while(hash_s1 != hash_s2):
+def FindC(s1: str, byteLen):
+    hash_dict = {}
+    hash_s1 = Hash_sha256(s1)[0:byteLen]
+    hash_dict[s1] = hash_s1 
+    check = True
+    while(check):
         s2 = ''.join(random.choices(string.ascii_lowercase +
                              string.digits, k=5))
-        hash_s2 = Hash_sha256(s2)[0:4]
+        hash_s2 = Hash_sha256(s2)[0:byteLen]
+        for x in hash_dict:
+            if x!= s2 and hash_dict[x] == hash_s2:
+                return x, s2, hash_dict[x], hash_s2
+        if s2 not in hash_dict:
+            hash_dict[s2] = hash_s2
 
-    return s1, s2
 
 
 print("Part C Hash collision:")
-collision = FindC(s1)
-print(collision, Hash_sha256(s1)[0:4], Hash_sha256(collision[1])[0:4])
+collision = FindC(s1, 8)
+print(collision)
