@@ -4,7 +4,7 @@ import sys
 from Crypto.Util import number
 import random
 import hashlib
-import bcrypt
+from math import factorial
 
 #hash function for strings
 def Hash_sha256(s : str):
@@ -12,18 +12,45 @@ def Hash_sha256(s : str):
     hash = hash.hex()
     return hash
 
+#calculate the hamming distance
+def hamming_distance(str1, str2):
+    return sum([bin(ord(x) ^ ord(y)).count('1') for x, y in zip(str1, str2)])
+
 #Part A
-userData = "hello"
+print("\nPartA Hash:")
+userData = input("What would you like to hash? ")
 hash = Hash_sha256(userData)
-print("PartA Hash:")
 print(hash)
+print("\n___________________________________________")
 
 #Part B
+print("\nPartB")
 string_1 = '101010101'
 string_2 = '101010100'
-print("PartB")
-print("Hash String 1:", Hash_sha256(string_1))
-print("Hash string 2:", Hash_sha256(string_2))
+print("String1: ", string_1)
+print("String2: ", string_2)
+print("Hash String 1: ", Hash_sha256(string_1))
+print("Hash string 2: ", Hash_sha256(string_2))
+print("Hamming distance of strings: ", hamming_distance(string_1, string_2))
+print("\n")
+
+string_1 = "hello"
+string_2 = "iello"
+print("String1: ", string_1)
+print("String2: ", string_2)
+print("Hash String 1: ", Hash_sha256(string_1))
+print("Hash string 2: ", Hash_sha256(string_2))
+print("Hamming distance of strings: ", hamming_distance(string_1, string_2))
+print("\n")
+
+string_1 = "Anna&Tanya"
+string_2 = "Anna&Tany`"
+print("String1: ", string_1)
+print("String2: ", string_2)
+print("Hash String 1: ", Hash_sha256(string_1))
+print("Hash string 2: ", Hash_sha256(string_2))
+print("Hamming distance of strings: ", hamming_distance(string_1, string_2))
+print("\n___________________________________________")
 
 #Part C
 s1 = "Hello"
@@ -44,6 +71,6 @@ def FindC(s1: str, byteLen):
 
 
 
-print("Part C Hash collision:")
-collision = FindC(s1, 8)
+print("\nPart C Hash collision:")
+collision = FindC(s1, 7)
 print(collision)
