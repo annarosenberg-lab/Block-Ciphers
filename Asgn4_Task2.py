@@ -1,8 +1,5 @@
-
-from Crypto.Util import number
 import time
 import bcrypt
-import nltk
 from nltk.corpus import words
 import multiprocessing as mp
 
